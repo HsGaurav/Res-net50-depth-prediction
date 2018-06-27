@@ -56,16 +56,17 @@ def main():
     while ret:
         ret, frame = video_capture.read()
         hola = predict(model_path, frame)
+        
         print('-------------',hola.shape,'--------------')
         fig = plt.figure()
         ii = plt.imshow(hola, interpolation='nearest')
         fig.colorbar(ii)
         io = plt.show()
+        tf.reset_default_graph()
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-        #if you uncomment the line under this comment(press Ctrl + /) then the code works else it gives an error after running first loop in while true loop
-#         break
+            
     video_capture.release()
     cv2.destroyAllWindows()
     os._exit(0)
