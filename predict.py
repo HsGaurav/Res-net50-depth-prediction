@@ -52,21 +52,34 @@ def main():
     model_path = 'NYU_FCRN.ckpt'
     video_capture = cv2.VideoCapture(0)
     ret = True
+    x = 159             #x and y are the value of the pixel where you want the value of rgb
+    y = 127
+    starttime = time.time()
     
     while ret:
         ret, frame = video_capture.read()
         hola = predict(model_path, frame)
-        
+ 
         print('-------------',hola.shape,'--------------')
         fig = plt.figure()
         ii = plt.imshow(hola, interpolation='nearest')
+        print(ii)
         fig.colorbar(ii)
-        io = plt.show()
+        
+        #value of the rgb image at the give pixel of x and y
+        im = scipy.misc.toimage(hola)
+        pix = im.load()
+#         print(im.size)
+        print(pix[x,y])
+        
+        plt.show()
         tf.reset_default_graph()
-
+    
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
             
+        print("--- %s seconds ---" % (time.time() - starttime))
+        
     video_capture.release()
     cv2.destroyAllWindows()
     os._exit(0)
